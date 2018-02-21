@@ -5,6 +5,19 @@
  *   - add each card's HTML to the page
  */
 
+ var cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb", "fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
+
+ $(document).ready(function() {
+   shuffle(cards);
+
+   for (i = 0; i < cards.length; i++) {
+     var listItem = document.createElement("li");
+     listItem.appendChild(document.createTextNode("<i class='" + cards[i] + "'></i>"));
+     listItem.setAttribute('class', 'card');
+     $('.deck').append(listItem);
+   }
+ });
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;

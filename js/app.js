@@ -1,6 +1,6 @@
 /*
  * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
+ *   - shuffle the list of cards using the "shuffle" method
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
@@ -9,7 +9,6 @@
 
  $(document).ready(function() {
    shuffle(cards);
-
    for (i = 0; i < cards.length; i++) {
      var listItem = document.createElement("li");
      listItem.appendChild(document.createTextNode("<i class='" + cards[i] + "'></i>"));
@@ -17,21 +16,6 @@
      $('.deck').append(listItem);
    }
  });
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
 
 /*
  * set up the event listener for a card. If a card is clicked:

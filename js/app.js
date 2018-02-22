@@ -10,10 +10,8 @@
  $(document).ready(function() {
    shuffle(cards);
    for (i = 0; i < cards.length; i++) {
-     var listItem = document.createElement("li");
-     listItem.appendChild(document.createTextNode("<i class='" + cards[i] + "'></i>"));
-     listItem.setAttribute('class', 'card');
-     $('.deck').append(listItem);
+     var addCard = '<li class="card"><i class="' + cards[i] + '"></i></li>';
+     $('.deck').append(addCard);
    }
  });
 
@@ -27,3 +25,13 @@
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+$('ul').on('click', 'li', function() {
+  showCard();
+
+});
+
+function showCard() {
+  let card = $(event.target);
+  card.addClass('show open');
+
+}

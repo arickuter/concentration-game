@@ -4,17 +4,18 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+ $.getScript("lib.js");
 
 var cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb", "fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
 var openCards = [];
 
- $(document).ready(function() {
-   shuffle(cards);
-   for (i = 0; i < cards.length; i++) {
-     var addCard = '<li class="card"><i class="' + cards[i] + '"></i></li>';
-     $('.deck').append(addCard);
-   }
- });
+$(document).ready(function() {
+  shuffle(cards);
+  for (i = 0; i < cards.length; i++) {
+    var addCard = '<li class="card"><i class="' + cards[i] + '"></i></li>';
+    $('.deck').append(addCard);
+  }
+});
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -41,12 +42,12 @@ function showCard() {
 function checkCard(card) {
   if (openCards.length > 0) {
     /* If card already selected */
-    var oldCard = $("." + openCards[0].substring(0,2) + "." + openCards[0].substring(3, openCards[0].length));
+    var oldCard = $("." + openCards[0].substring(0, 2) + "." + openCards[0].substring(3, openCards[0].length));
     if (card.children().attr('class') === openCards[0]) {
       card.addClass('match');
       oldCard.parent('li').addClass('match');
       openCards = [];
-    }else{
+    } else {
       openCards = [];
       // Hot sleep for 2 seconds
       start = new Date().getTime();
@@ -57,8 +58,8 @@ function checkCard(card) {
       $(oldCard.parent('li')).css("pointer-events", "auto");
       $(card).css("pointer-events", "auto");
     }
-  /* If no card selected */
-  }else{
+    /* If no card selected */
+  } else {
     openCards.push(card.children().attr('class'));
   }
 }

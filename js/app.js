@@ -1,10 +1,4 @@
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the "shuffle" method
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
+// Variable declaration
 var cards = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb", "fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor", "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
 var openCards = [];
 var moveNum = 0;
@@ -13,11 +7,13 @@ var clickable = true;
 var star = '<li><i class="fa fa-star"></i></li>';
 var fullStars = star + star + star;
 
+// Shuffles cards and populates deck
 $(document).ready(function() {
   shuffle(cards);
   populateDeck();
 });
 
+// Loops through cards array and populates ul element with cards
 function populateDeck() {
   for (i = 0; i < cards.length; i++) {
     var addCard = '<li class="card"><i class="' + cards[i] + '"></i></li>';
@@ -25,16 +21,7 @@ function populateDeck() {
   }
 }
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+// Event listener for ul items, excuted some code only when clickable is true
 $('ul').on('click', 'li', function() {
   if (clickable === true) {
     var activeCard = $(event.target);
@@ -43,10 +30,12 @@ $('ul').on('click', 'li', function() {
   }
 });
 
+// When restart button clicked, restart() is called
 $('.restart').on('click', 'i', function() {
   restart();
 });
 
+// Resets the game as if page were refreshed
 function restart() {
   $('.deck').empty();
   moveNum = 0;
@@ -60,18 +49,24 @@ function restart() {
   populateDeck();
 }
 
+// Disables clicks on object and adds two classes
 function showCard(activeCard) {
   $(activeCard).css("pointer-events", "none");
   activeCard.addClass('open show');
 }
 
+/* Checks if another card is already open. If there is, it disables clicks on
+all other cards and further checks if the two cards match. If they match,
+matchCards() is called and clicks are allowed once again. If they do not match,
+clicks are allowed and noMatch() is called after certain time. However if there no
+cards already open, the clicked card is added to array openCards
+*/
 function checkCards(activeCard) {
   if (openCards.length > 0) {
     clickable = false;
     if (activeCard.children().attr('class') === openCards[0].children().attr('class')) {
       matchCards(activeCard, openCards[0]);
       clickable = true;
-
     } else {
       setTimeout(function() {
         clickable = true;
@@ -83,10 +78,14 @@ function checkCards(activeCard) {
   }
 }
 
+// Adds param 'card' to array
 function addCard(card) {
   openCards.push(card);
 }
 
+/* Receives two params and adds classes to them, inc. matchedPairs, resets
+openCards arr. calls move() function and checks if player has won
+*/
 function matchCards(cardOne, cardTwo) {
   cardOne.addClass('match');
   cardTwo.addClass('match');
@@ -98,6 +97,9 @@ function matchCards(cardOne, cardTwo) {
   }, 500);
 }
 
+/* Receives two objects as params and removes classes from them and re-enables
+clicks, resets openCards arr. and calls move()
+*/
 function noMatch(cardOne, cardTwo) {
   cardOne.removeClass('show open');
   cardTwo.removeClass('show open');
@@ -107,6 +109,7 @@ function noMatch(cardOne, cardTwo) {
   move();
 }
 
+// Checks how many moves have been completed and displays certain amount of stars
 function move() {
   moveNum += 1;
   if (moveNum > 15 && moveNum <= 20) {
@@ -116,9 +119,10 @@ function move() {
   } else if (moveNum > 25) {
     $('#one').removeClass('fa fa-star');
   }
-  void(document.getElementById("moves").innerHTML = moveNum);
+  void(document.getElementById("moves").innerHTML = moveNum); // Displays moveNum
 }
 
+// Checks if all cards have been matched -> Win message and resets deck
 function win() {
   if (matchedPairs === 8) {
     alert('\t\t\t\tCongratulatons! You win!');

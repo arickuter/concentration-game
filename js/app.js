@@ -4,13 +4,23 @@ var openCards = [];
 var moveNum = 0;
 var matchedPairs = 0;
 var clickable = true;
-var star = '<li><i class="fa fa-star"></i></li>';
-var fullStars = star + star + star;
+var starRate = 3;
+var timer = 0;
+var startTime = new Date().getTime();
+var playTime;
+
+// Adds stars to page
+function starPop() {
+  for (i = 1; i < 4; i++) {
+    $('.stars').append('<li><i id="star' + i + '" class="fa fa-star"></i></li>');
+  }
+}
 
 // Shuffles cards and populates deck
 $(document).ready(function() {
   shuffle(cards);
   populateDeck();
+  starPop();
 });
 
 // Loops through cards array and populates ul element with cards
@@ -41,12 +51,17 @@ function restart() {
   moveNum = 0;
   void(document.getElementById("moves").innerHTML = moveNum);
   $('.stars').empty();
-  $('.stars').append(fullStars);
+  starPop();
   matchedPairs = 0;
   clickable = true;
   openCards = [];
   shuffle(cards);
   populateDeck();
+  starRate = 3;
+  timer = 0;
+  startTime = new Date().getTime();
+  void(document.getElementById("timer").innerHTML = ' Timer: 0s');
+  playTime = 0;
 }
 
 // Disables clicks on object and adds two classes
@@ -54,6 +69,10 @@ function showCard(activeCard) {
   $(activeCard).css("pointer-events", "none");
   activeCard.addClass('open show');
 }
+// Executes every second and displays how much time has passed
+setInterval(function() {
+  void(document.getElementById("timer").innerHTML = '   Timer: ' + Math.round((new Date().getTime()-startTime)/1000) + 's');
+}, 1000);
 
 /* Checks if another card is already open. If there is, it disables clicks on
 all other cards and further checks if the two cards match. If they match,
@@ -113,11 +132,15 @@ function noMatch(cardOne, cardTwo) {
 function move() {
   moveNum += 1;
   if (moveNum > 15 && moveNum <= 20) {
-    $('#three').removeClass('fa fa-star');
+    $('#star3').removeClass('fa fa-star');
+    if (starRate === 3) {
+      starRate -= 1;
+    }
   } else if (moveNum > 20 && moveNum <= 25) {
-    $('#two').removeClass('fa fa-star');
-  } else if (moveNum > 25) {
-    $('#one').removeClass('fa fa-star');
+    $('#star2').removeClass('fa fa-star');
+    if (starRate === 2) {
+      starRate -= 1;
+    }
   }
   void(document.getElementById("moves").innerHTML = moveNum); // Displays moveNum
 }
@@ -125,7 +148,8 @@ function move() {
 // Checks if all cards have been matched -> Win message and resets deck
 function win() {
   if (matchedPairs === 8) {
-    alert('\t\t\t\tCongratulatons! You win!');
+    playTime = Math.round((new Date().getTime()-startTime)/1000);
+    alert('Congratulatons! You win! Star rating: ' + starRate + ' | Time: ' + playTime + 's');
     restart();
   }
 }

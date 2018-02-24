@@ -11,6 +11,7 @@ var moveNum = 0;
 var matchedPairs = 0;
 var clickable = true;
 var star = '<li><i class="fa fa-star"></i></li>';
+var fullStars = star + star + star;
 
 $(document).ready(function() {
   shuffle(cards);
@@ -50,6 +51,8 @@ function restart() {
   $('.deck').empty();
   moveNum = 0;
   void(document.getElementById("moves").innerHTML = moveNum);
+  $('.stars').empty();
+  $('.stars').append(fullStars);
   matchedPairs = 0;
   clickable = true;
   openCards = [];

@@ -10,14 +10,19 @@ var openCards = [];
 var moveNum = 0;
 var matchedPairs = 0;
 var clickable = true;
+var star = '<li><i class="fa fa-star"></i></li>';
 
 $(document).ready(function() {
   shuffle(cards);
+  populateDeck();
+});
+
+function populateDeck() {
   for (i = 0; i < cards.length; i++) {
     var addCard = '<li class="card"><i class="' + cards[i] + '"></i></li>';
     $('.deck').append(addCard);
   }
-});
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -38,8 +43,19 @@ $('ul').on('click', 'li', function() {
 });
 
 $('.restart').on('click', 'i', function() {
-  location.reload(true);
+  restart();
 });
+
+function restart() {
+  $('.deck').empty();
+  moveNum = 0;
+  void(document.getElementById("moves").innerHTML = moveNum);
+  matchedPairs = 0;
+  clickable = true;
+  openCards = [];
+  shuffle(cards);
+  populateDeck();
+}
 
 function showCard(activeCard) {
   $(activeCard).css("pointer-events", "none");
@@ -73,9 +89,10 @@ function matchCards(cardOne, cardTwo) {
   cardTwo.addClass('match');
   matchedPairs += 1;
   openCards = [];
+  move();
   setTimeout(function() {
     win();
-  }, 1250);
+  }, 500);
 }
 
 function noMatch(cardOne, cardTwo) {
@@ -89,12 +106,20 @@ function noMatch(cardOne, cardTwo) {
 
 function move() {
   moveNum += 1;
+  if (moveNum > 15 && moveNum <= 20) {
+    $('#three').removeClass('fa fa-star');
+  } else if (moveNum > 20 && moveNum <= 25) {
+    $('#two').removeClass('fa fa-star');
+  } else if (moveNum > 25) {
+    $('#one').removeClass('fa fa-star');
+  }
   void(document.getElementById("moves").innerHTML = moveNum);
 }
 
 function win() {
   if (matchedPairs === 8) {
-    alert('Congratulatons! You have won in ' + moveNum + ' moves!');
+    alert('\t\t\t\tCongratulatons! You win!');
+    restart();
   }
 }
 

@@ -6,14 +6,25 @@ var matchedPairs = 0;
 var clickable = true;
 var starRate = 3;
 var timer = 0;
-var startTime = new Date().getTime();
+var startTime;
 var playTime;
+timerRunning = false;
+var timeObj;
 
 // Adds stars to page
 function starPop() {
   for (i = 1; i < 4; i++) {
     $('.stars').append('<li><i id="star' + i + '" class="fa fa-star"></i></li>');
   }
+}
+
+function beginTimer() {
+  // Executes every second and displays how much time has passed
+  startTime = new Date().getTime();
+  timerRunning = true;
+  timeObj = setInterval(function() {
+    void(document.getElementById("timer").innerHTML = '   Timer: ' + Math.round((new Date().getTime() - startTime) / 1000) + 's');
+  }, 1000);
 }
 
 // Shuffles cards and populates deck
@@ -38,6 +49,9 @@ $('ul').on('click', 'li', function() {
     showCard(activeCard);
     checkCards(activeCard);
   }
+  if (timerRunning === false) {
+    beginTimer();
+  }
 });
 
 // When restart button clicked, restart() is called
@@ -59,9 +73,10 @@ function restart() {
   populateDeck();
   starRate = 3;
   timer = 0;
-  startTime = new Date().getTime();
   void(document.getElementById("timer").innerHTML = ' Timer: 0s');
   playTime = 0;
+  timerRunning = false;
+  clearInterval(timeObj);
 }
 
 // Disables clicks on object and adds two classes
@@ -69,10 +84,6 @@ function showCard(activeCard) {
   $(activeCard).css("pointer-events", "none");
   activeCard.addClass('open show');
 }
-// Executes every second and displays how much time has passed
-setInterval(function() {
-  void(document.getElementById("timer").innerHTML = '   Timer: ' + Math.round((new Date().getTime()-startTime)/1000) + 's');
-}, 1000);
 
 /* Checks if another card is already open. If there is, it disables clicks on
 all other cards and further checks if the two cards match. If they match,
@@ -148,9 +159,9 @@ function move() {
 // Checks if all cards have been matched -> Win message and resets deck
 function win() {
   if (matchedPairs === 8) {
-    playTime = Math.round((new Date().getTime()-startTime)/1000);
+    playTime = Math.round((new Date().getTime() - startTime) / 1000);
     alert('Congratulatons! You win! Star rating: ' + starRate + ' | Time: ' + playTime + 's');
-    restart();
+    clearInterval(timeObj);
   }
 }
 

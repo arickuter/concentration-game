@@ -43,8 +43,8 @@ function populateDeck() {
 }
 
 // Event listener for ul items, excuted some code only when clickable is true
-$('ul').on('click', 'li', function() {
-  if (clickable === true) {
+$('ul').on('click', 'li', function(event) {
+  if (clickable) {
     var activeCard = $(event.target);
     showCard(activeCard);
     checkCards(activeCard);

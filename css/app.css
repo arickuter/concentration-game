@@ -37,7 +37,8 @@ h1 {
 
 .deck {
   width: 660px;
-  min-height: 680px;
+  height: 680px;
+  min-height: 320px;
   background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
   padding: 32px;
   border-radius: 10px;
@@ -103,4 +104,40 @@ h1 {
 .score-panel .restart {
   float: right;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 700px) {
+  h1 {
+    font-size: 20px;
+  }
+  .score-panel {
+    font-size: 10px;
+  }
+  .deck {
+    width: 400px;
+    height: 420px;
+  }
+  .deck .card {
+    width: 75px;
+    height: 75px;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  h1 {
+    font-size: 20px;
+  }
+  .score-panel {
+    font-size: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+  .deck {
+    width: 320px;
+    height: 336px;
+  }
+  .deck .card {
+    width: 57px;
+    height: 57px;
+  }
 }
